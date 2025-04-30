@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Weather index{% endblock %}
+
+{% block body %}
+    <h1>Weather index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>City</th>
+                <th>Temperature</th>
+                <th>Condition</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for weather in weather %}
+            <tr>
+                <td>{{ weather.id }}</td>
+                <td>{{ weather.city }}</td>
+                <td>{{ weather.temperature }}</td>
+                <td>{{ weather.condition }}</td>
+                <td>
+                    <a href="{{ path('weather_show', {'id': weather.id}) }}">show</a>
+                    <a href="{{ path('weather_edit', {'id': weather.id}) }}">edit</a>
+                    <a href="{{ path('weather_delete', {'id': weather.id}) }}">{{ include('weather/_delete_form.html.twig') }}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('weather_new') }}">Create new</a>
+    
+{% endblock %}
