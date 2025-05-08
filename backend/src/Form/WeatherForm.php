@@ -13,8 +13,11 @@ class WeatherForm extends AbstractType
     {
         $builder
             ->add('city')
+            ->add('country')
+            ->add('lat')
+            ->add('lon')
             ->add('temperature')
-            ->add('condition')
+            ->add('humidity')
         ;
     }
 

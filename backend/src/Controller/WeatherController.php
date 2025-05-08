@@ -44,12 +44,11 @@ final class WeatherController extends AbstractController
             'latitude' => $latitude,
             'longitude' => $longitude,
             'temperature' => $data['current_weather']['temperature'],
-            'condition' => $data['current_weather']['weathercode'],
         ]);
     }
 
 
-    #[Route('', name: 'weather', methods: ['GET'])]
+    #[Route('/show', name: 'weather', methods: ['GET'])]
     public function index(WeatherRepository $weatherRepository): Response
     {
         return $this->render('weather/index.html.twig', [
