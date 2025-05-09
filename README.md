@@ -4,7 +4,7 @@ Test pour Four Data
 
 Techno utilisées :
 
-- Vitejs, Vuejs avec Vuetufy en front-end
+- Vitejs, Vuejs avec Vuetify en front-end
 - Symfony en back-end
 
 ### Les commandes pour lancer le projet :
