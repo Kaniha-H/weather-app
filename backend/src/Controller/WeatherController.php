@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Weather;
-use App\Form\WeatherForm;
 use App\Repository\WeatherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,100 +14,79 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 #[Route('/api/weather')]
 final class WeatherController extends AbstractController
 {
-    private $httpClient;
-
-    public function __construct()
-    {
-        $this->httpClient = HttpClient::create();
-    }
-
-    #[Route('/current/{lat}/{long}', name: 'weather_current', methods: ['GET'])]
-    public function currentWeather(Request $request): JsonResponse
-    {
-        $latitude = strval($request->attributes->get('lat'));
-        $longitude = strval($request->attributes->get('long'));
-
-        if (!$latitude || !$longitude) {
-            return $this->json([
-                'error' => 'Missing latitude or longitude parameters.'
-            ], 400);
-        }
-
-        $url = "https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&current_weather=true";
-
-        $response = $this->httpClient->request('GET', $url);
-        $data = $response->toArray();
-
-        return $this->json([
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-            'temperature' => $data['current_weather']['temperature'],
-        ]);
-    }
-
 
     #[Route('/show', name: 'weather', methods: ['GET'])]
     public function index(WeatherRepository $weatherRepository): Response
     {
-        return $this->render('weather/index.html.twig', [
-            'weather' => $weatherRepository->findAll(),
-        ]);
+        $weatherData = $weatherRepository->findAll();
+
+        $data = array_map(function ($weather) {
+            return [
+                'id' => $weather->getId(),
+                'city' => $weather->getCity(),
+                'country' => $weather->getCountry(),
+                'lat' => $weather->getLat(),
+                'lon' => $weather->getLon(),
+                'temperature' => $weather->getTemperature(),
+                'humidity' => $weather->getHumidity(),
+            ];
+        }, $weatherData);
+
+    return new JsonResponse($data);
     }
 
-    #[Route('/new', name: 'weather_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    #[Route('/new', name: 'weather_new', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+
+        if (!$data) {
+            return new JsonResponse(['error' => 'Données invalides'], 400);
+        }
+
         $weather = new Weather();
-        $form = $this->createForm(WeatherForm::class, $weather);
-        $form->handleRequest($request);
+        $weather->setCity($data['city'] ?? '');
+        $weather->setCountry($data['country'] ?? '');
+        $weather->setLat($data['lat'] ?? 0);
+        $weather->setLon($data['lon'] ?? 0);
+        $weather->setTemperature($data['temperature'] ?? 0);
+        $weather->setHumidity($data['humidity'] ?? 0);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($weather);
-            $em->flush();
+        $em->persist($weather);
+        $em->flush();
 
-            return $this->redirectToRoute('weather', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('weather/new.html.twig', [
-            'weather' => $weather,
-            'form' => $form,
-        ]);
+        return new JsonResponse(['success' => true], 201);
     }
 
-    #[Route('/{id}', name: 'weather_show', methods: ['GET'])]
-    public function show(Weather $weather): Response
+    #[Route('/update/{id}', name: 'update_weather', methods: ['PUT'])]
+    public function update(Request $request, Weather $weather, EntityManagerInterface $em): JsonResponse
     {
-        return $this->render('weather/show.html.twig', [
-            'weather' => $weather,
-        ]);
+        $data = json_decode($request->getContent(), true);
+
+        $weather->setCity($data['city']);
+        $weather->setCountry($data['country']);
+        $weather->setLat($data['lat']);
+        $weather->setLon($data['lon']);
+        $weather->setTemperature($data['temperature']);
+        $weather->setHumidity($data['humidity']);
+
+        $em->flush();
+
+        return new JsonResponse(['success' => true]);
     }
 
-    #[Route('/{id}/edit', name: 'weather_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Weather $weather, EntityManagerInterface $em): Response
+
+    #[Route('/{id}', name: 'weather_delete', methods: ['DELETE'])]
+    public function delete(Weather $weather, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(WeatherForm::class, $weather);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-
-            return $this->redirectToRoute('weather', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('weather/edit.html.twig', [
-            'weather' => $weather,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'weather_delete', methods: ['POST'])]
-    public function delete(Request $request, Weather $weather, EntityManagerInterface $em): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$weather->getId(), $request->getPayload()->getString('_token'))) {
+        try {
             $em->remove($weather);
             $em->flush();
+            return new Response(null, Response::HTTP_NO_CONTENT);
+        } catch (\Throwable $e) {
+            return new Response($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return $this->redirectToRoute('weather', [], Response::HTTP_SEE_OTHER);
     }
+
 }
