@@ -33,43 +33,10 @@
       </v-list-item>
     </div>
 
-    <v-expand-transition>
-      <div v-if="expand">
-        <div class="py-2">
-          <v-slider
-            v-model="time"
-            :max="6"
-            :step="1"
-            :ticks="labels"
-            class="mx-4"
-            color="primary"
-            density="compact"
-            show-ticks="always"
-            thumb-size="10"
-            hide-details
-          ></v-slider>
-        </div>
-
-        <v-list class="bg-transparent">
-          <v-list-item
-            v-for="item in forecast"
-            :key="item.day"
-            :append-icon="item.icon"
-            :subtitle="item.temp"
-            :title="item.day"
-          >
-          </v-list-item>
-        </v-list>
-      </div>
-    </v-expand-transition>
-
     <v-divider></v-divider>
 
     <v-card-actions>
-      <v-btn
-        :text="!expand ? 'Full Report' : 'Hide Report'"
-        @click="expand = !expand"
-      ></v-btn>
+      <p class="ml-2">{{ getWeatherName(data.current.weather_code) }}</p>
     </v-card-actions>
   </v-card>
 </template>
@@ -81,9 +48,11 @@ const props = defineProps({
   data: Object,
 });
 
-// console.log("props.data : ", props.data);
-
 const getWeatherIcon = (code) => {
   return weather_codes[code].icon;
+};
+
+const getWeatherName = (code) => {
+  return weather_codes[code].name;
 };
 </script>

@@ -17,6 +17,7 @@
   </v-form>
   <div v-if="weather" class="mt-5">
     <WeatherCard :data="weather" />
+    <!-- TODO faire un bouton ajout (utiliser un gestionnaire d'état Pinia???)-->
   </div>
 </template>
 
@@ -46,6 +47,7 @@ const getLocation = async () => {
       lon: result.longitude,
     };
   } catch (error) {
+    // TODO : gérer les erreurs
     console.error("Erreur lors de la géolocalisation :", error);
     return null;
   }
@@ -57,20 +59,17 @@ const getCurrentWeather = async () => {
 
   try {
     const res = await axios.get(
-      /*`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m`*/
       `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m`
     );
 
     weather.value = {
       location: `${loc.name}, ${loc.country}`,
-      //   ...res.data.current_weather,
       ...res.data,
     };
 
-    // console.log("Météo actuelle :", weather.value);
-
     return weather.value;
   } catch (error) {
+    // TODO : gérer les erreurs
     console.error("Erreur lors de la requête météo :", error);
   }
 };

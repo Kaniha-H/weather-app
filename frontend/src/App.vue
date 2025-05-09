@@ -1,13 +1,11 @@
 <template>
   <v-layout>
     <v-main>
-      <Home />
+      <RouterView />
     </v-main>
   </v-layout>
 </template>
 
-<script setup>
-import Home from "./components/Home.vue";
-</script>
+<script setup></script>
 
 <style scoped></style>

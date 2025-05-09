@@ -1,7 +1,7 @@
 import Home from "./components/Home.vue";
-import WeatherCard from "./components/WeatherCard.vue";
+import WeatherList from "./components/WeatherList.vue";
 
 export const routes = [
   { path: "/", component: Home },
-  { path: "/current-weather", component: WeatherCard },
+  { path: "/all", component: WeatherList },
 ];
