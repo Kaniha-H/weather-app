@@ -1,58 +1,80 @@
 <template>
-  <v-card class="mx-auto" max-width="368">
-    <v-card-item :title="data.location">
-      <template v-slot:subtitle> </template>
-    </v-card-item>
-
-    <v-card-text class="py-0">
-      <v-row align="center" no-gutters>
-        <v-col class="text-h3" cols="6">
-          {{ data.current.temperature_2m }} &deg;C
-        </v-col>
-
-        <v-col class="text-right" cols="6">
-          <v-icon color="white" icon="mdi-weather-hurricane" size="88"></v-icon>
-        </v-col>
-      </v-row>
-    </v-card-text>
-
-    <div class="d-flex py-3 justify-space-between">
-      <v-list-item density="compact" prepend-icon="mdi-weather-windy">
-        <v-list-item-subtitle>
-          {{ data.current.wind_speed_10m }} km/h
-        </v-list-item-subtitle>
-      </v-list-item>
-
-      <v-list-item
-        density="compact"
-        :prepend-icon="getWeatherIcon(data.current.weather_code)"
+  <v-container>
+    <v-row class="flex-child text-subtitle-2">
+      <v-col class="d-flex" cols="12">
+        <v-row>
+          <v-col cols="9">
+            <v-row>
+              <WeatherInfo v-if="data" :data="data" />
+              <v-sheet
+                v-else
+                color="primary"
+                height="150"
+                width="100%"
+                rounded="rounded"
+                class="mr-1 mb-1 pt-12 text-center"
+              >
+                <p>Veuillez chercher une ville</p>
+              </v-sheet>
+            </v-row>
+            <v-row>
+              <WeatherGraph
+                v-if="data && Object.keys(data).length"
+                :weather="props.data"
+              />
+              <v-sheet
+                v-else
+                color="primary"
+                height="200"
+                width="100%"
+                rounded="rounded"
+                class="mr-1 pt-12 text-center"
+              >
+                <p>Aucunes données</p>
+              </v-sheet>
+            </v-row>
+          </v-col>
+          <v-col class="d-flex" cols="3">
+            <v-row>
+              <WeatherHourly
+                v-if="data && Object.keys(data).length"
+                :data="props.data"
+              />
+              <v-sheet
+                v-else
+                color="primary"
+                height="100%"
+                width="100%"
+                rounded="rounded"
+                class="mr-1 pt-12 text-center"
+              >
+                <p>Aucunes données</p>
+              </v-sheet>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-sheet
+        color="primary"
+        rounded="rounded"
+        class="mt-1"
+        height="250"
+        width="100%"
       >
-        <v-list-item-subtitle
-          >{{ data.current.relative_humidity_2m }}%</v-list-item-subtitle
-        >
-      </v-list-item>
-    </div>
-
-    <v-divider></v-divider>
-
-    <v-card-actions>
-      <p class="ml-2">{{ getWeatherName(data.current.weather_code) }}</p>
-    </v-card-actions>
-  </v-card>
+        <p>#4: (2r x 1c)</p>
+      </v-sheet>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup>
-import weather_codes from "../utils/weatherCode";
+import WeatherInfo from "./WeatherInfo.vue";
+import WeatherGraph from "./WeatherGraph.vue";
+import WeatherHourly from "./WeatherHourly.vue";
 
 const props = defineProps({
   data: Object,
 });
-
-const getWeatherIcon = (code) => {
-  return weather_codes[code].icon;
-};
-
-const getWeatherName = (code) => {
-  return weather_codes[code].name;
-};
 </script>

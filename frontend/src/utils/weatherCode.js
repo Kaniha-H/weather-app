@@ -1,115 +1,115 @@
 const weather_codes = {
   0: {
     name: "Ciel dégagé",
-    icon: "mdi-weather-sunny",
+    icon: "clear.svg",
   },
   1: {
     name: "Principalement dégagé",
-    icon: "mdi-weather-sunny",
+    icon: "clear.svg",
   },
   2: {
     name: "Partiellement nuageux",
-    icon: "mdi-weather-partly-cloudy",
+    icon: "partly-cloudy.svg",
   },
   3: {
     name: "Couvert",
-    icon: "mdi-weather-cloudy",
+    icon: "overcast.svg",
   },
   45: {
     name: "Brouillard",
-    icon: "mdi-weather-fog",
+    icon: "fog.svg",
   },
   48: {
     name: "Brouillard givrant",
-    icon: "mdi-weather-fog",
+    icon: "rime-fog.svg",
   },
   51: {
     name: "Bruine légère",
-    icon: "mdi-weather-dust",
+    icon: "light-drizzle.svg",
   },
   53: {
     name: "Bruine modérée",
-    icon: "mdi-weather-dust",
+    icon: "drizzle.svg",
   },
   55: {
     name: "Bruine forte",
-    icon: "mdi-weather-dust",
+    icon: "heavy-drizzle.svg",
   },
   56: {
     name: "Bruine verglaçante légère",
-    icon: "mdi-weather-dust",
+    icon: "drizzle.svg",
   },
   57: {
     name: "Bruine verglaçante forte",
-    icon: "mdi-weather-dust",
+    icon: "heavy-drizzle.svg",
   },
   61: {
     name: "Pluie faible",
-    icon: "mdi-weather-sunny",
+    icon: "slight-rain.svg",
   },
   63: {
     name: "Pluie modérée",
-    icon: "mdi-weather-pouring",
+    icon: "rain.svg",
   },
   65: {
     name: "Pluie forte",
-    icon: "mdi-weather-rainy",
+    icon: "heavy-rain.svg",
   },
   66: {
     name: "Pluie verglaçante légère",
-    icon: "mdi-weather-partly-snowy-rainy",
+    icon: "rain.svg",
   },
   67: {
     name: "Pluie verglaçante forte",
-    icon: "mdi-weather-partly-snowy-rainy",
+    icon: "heavy-rain.svg",
   },
   71: {
     name: "Chute de neige faible",
-    icon: "mdi-weather-snowy-heavy",
+    icon: "light-snow.svg",
   },
   73: {
     name: "Chute de neige modérée",
-    icon: "mdi-weather-snowy-heavy",
+    icon: "snow.svg",
   },
   75: {
     name: "Chute de neige forte",
-    icon: "mdi-weather-snowy-heavy",
+    icon: "heavy-snow.svg",
   },
   77: {
     name: "Grains de neige",
-    icon: "mdi-weather-snowy-heavy",
+    icon: "snow-grains.svg",
   },
   80: {
     name: "Averses de pluie légères",
-    icon: "mdi-weather-pouring",
+    icon: "slight-rain-showers.svg",
   },
   81: {
     name: "Averses de pluie modérées",
-    icon: "mdi-weather-pouring",
+    icon: "rain-showers.svg",
   },
   82: {
     name: "Averses de pluie violentes",
-    icon: "mdi-weather-snowy-heavy",
+    icon: "heavy-rain-showers.svg",
   },
   85: {
     name: "Averses de neige légères",
-    icon: "mdi-weather-snowy",
+    icon: "light-snow-showers.svg",
   },
   86: {
     name: "Averses de neige fortes",
-    icon: "mdi-weather-snowy-heavy",
+    icon: "heavy-snow-showers.svg",
   },
   95: {
     name: "Orage faible ou modéré",
-    icon: "mdi-weather-snowy-heavy",
+    icon: "thunderstorm.svg",
   },
   96: {
     name: "Orage avec grêle faible",
-    icon: "mdi-weather-lightning-rainy",
+    icon: "hail.svg",
   },
   99: {
     name: "Orage avec grêle forte",
-    icon: "mdi-weather-lightning-rainy",
+    icon: "heavy-hail.svg",
   },
 };
 

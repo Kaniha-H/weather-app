@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout class="bg-background">
     <v-main>
       <RouterView />
     </v-main>
@@ -7,5 +7,3 @@
 </template>
 
 <script setup></script>
-
-<style scoped></style>
