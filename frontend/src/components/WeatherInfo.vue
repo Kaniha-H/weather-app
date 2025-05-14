@@ -1,6 +1,6 @@
 <template>
   <v-sheet color="primary" rounded="rounded" width="100%" class="mr-1 mb-1">
-    <v-row class="px-2 py-5">
+    <v-row class="ma-2 px-2 py-5">
       <v-col cols="2" class="d-flex align-center justify-center text-center">
         <v-icon size="40">{{
           getWeatherIcon(data.current.weather_code)
@@ -16,7 +16,7 @@
               <div class="text-h5 font-weight-medium mb-2">
                 {{ data.city }}
               </div>
-              <p class="text-body-2 mb-4">{{ data.country }}</p>
+              <p class="text-body-2">{{ data.country }}</p>
             </div>
           </v-col>
           <v-col
@@ -25,9 +25,9 @@
           >
             <div>
               <div class="text-h5 font-weight-medium mb-2">
-                {{ data.current.temperature_2m }} &deg;C
+                {{ Math.round(data.current.temperature_2m) }} &deg;C
               </div>
-              <p class="text-body-2 mb-4">Température</p>
+              <p class="text-body-2">Température</p>
             </div>
           </v-col>
           <v-col
@@ -38,7 +38,7 @@
               <div class="text-h5 font-weight-medium mb-2">
                 {{ data.current.relative_humidity_2m }}%
               </div>
-              <p class="text-body-2 mb-4">Humidité</p>
+              <p class="text-body-2">Humidité</p>
             </div>
           </v-col>
           <v-col
@@ -47,9 +47,9 @@
           >
             <div>
               <div class="text-h5 font-weight-medium mb-2">
-                {{ data.current.wind_speed_10m }} km/h
+                {{ Math.round(data.current.wind_speed_10m) }} km/h
               </div>
-              <p class="text-body-2 mb-4">Vitesse du vent</p>
+              <p class="text-body-2">Vitesse du vent</p>
             </div>
           </v-col>
         </v-row>
@@ -59,20 +59,9 @@
 </template>
 
 <script setup>
+import getWeatherIcon from "../utils/weatherCode";
+
 const props = defineProps({
   data: Object,
 });
-
-const getWeatherIcon = (code) => {
-  if (code === 0) return "mdi mdi-weather-sunny";
-  if (code === 1) return "mdi mdi-weather-partly-cloudy";
-  if (code === 2) return "mdi mdi-weather-cloudy";
-  if (code === 3) return "mdi mdi-weather-lightning";
-  if ([45, 48].includes(code)) return "mdi mdi-weather-fog";
-  if ([51, 53, 55, 56, 57].includes(code)) return "mdi mdi-weather-rainy";
-  if ([61, 63, 65].includes(code)) return "mdi mdi-weather-pouring";
-  if ([71, 73, 75, 77].includes(code)) return "mdi mdi-weather-snowy";
-  if ([95, 96, 99].includes(code)) return "mdi mdi-weather-lightning-rainy";
-  return "mdi mdi-weather-cloudy";
-};
 </script>

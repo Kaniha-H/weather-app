@@ -56,15 +56,16 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-sheet
+      <WeatherList />
+      <!--<v-sheet
         color="primary"
         rounded="rounded"
         class="mt-1"
         height="250"
         width="100%"
       >
-        <p>#4: (2r x 1c)</p>
-      </v-sheet>
+        <p></p>
+      </v-sheet>-->
     </v-row>
   </v-container>
 </template>
@@ -73,6 +74,7 @@
 import WeatherInfo from "./WeatherInfo.vue";
 import WeatherGraph from "./WeatherGraph.vue";
 import WeatherHourly from "./WeatherHourly.vue";
+import WeatherList from "./WeatherList.vue";
 
 const props = defineProps({
   data: Object,

@@ -19,7 +19,7 @@
           ><v-icon size="24">{{ getWeatherIcon(hour.code) }}</v-icon></v-sheet
         >
         <v-sheet class="ma-2" color="transparent"
-          ><p>{{ hour.temperature }}°C</p></v-sheet
+          ><p>{{ Math.round(hour.temperature) }}°C</p></v-sheet
         >
       </v-row>
       <v-sheet class="ma-2" color="transparent"
@@ -31,6 +31,7 @@
 
 <script setup>
 import { computed } from "vue";
+import getWeatherIcon from "../utils/weatherCode";
 
 const props = defineProps({
   data: {
@@ -38,19 +39,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const getWeatherIcon = (code) => {
-  if (code === 0) return "mdi mdi-weather-sunny";
-  if (code === 1) return "mdi mdi-weather-partly-cloudy";
-  if (code === 2) return "mdi mdi-weather-cloudy";
-  if (code === 3) return "mdi mdi-weather-lightning";
-  if ([45, 48].includes(code)) return "mdi mdi-weather-fog";
-  if ([51, 53, 55, 56, 57].includes(code)) return "mdi mdi-weather-rainy";
-  if ([61, 63, 65].includes(code)) return "mdi mdi-weather-pouring";
-  if ([71, 73, 75, 77].includes(code)) return "mdi mdi-weather-snowy";
-  if ([95, 96, 99].includes(code)) return "mdi mdi-weather-lightning-rainy";
-  return "mdi mdi-weather-cloudy";
-};
 
 const formatHour = (isoString) => {
   const date = new Date(isoString);
