@@ -22,14 +22,8 @@ class Weather
     #[ORM\Column(length: 255)]
     private ?string $country = null;
 
-    #[ORM\Column]
-    private ?float $lat = null;
-
-    #[ORM\Column]
-    private ?float $lon = null;
-
     #[ORM\Column(nullable: true)]
-    private ?int $humidity = null;
+    private ?int $condition = null;
 
     public function getId(): ?int
     {
@@ -72,38 +66,14 @@ class Weather
         return $this;
     }
 
-    public function getLat(): ?float
+    public function getCondition(): ?int
     {
-        return $this->lat;
+        return $this->condition;
     }
 
-    public function setLat(float $lat): static
+    public function setCondition(?int $condition): static
     {
-        $this->lat = $lat;
-
-        return $this;
-    }
-
-    public function getLon(): ?float
-    {
-        return $this->lon;
-    }
-
-    public function setLon(float $lon): static
-    {
-        $this->lon = $lon;
-
-        return $this;
-    }
-
-    public function getHumidity(): ?int
-    {
-        return $this->humidity;
-    }
-
-    public function setHumidity(?int $humidity): static
-    {
-        $this->humidity = $humidity;
+        $this->condition = $condition;
 
         return $this;
     }

@@ -11,10 +11,8 @@
                 <th>Id</th>
                 <th>City</th>
                 <th>Contry</th>
-                <th>lat</th>
-                <th>lon</th>
                 <th>Temperature</th>
-                <th>humidity</th>
+                <th>Condition</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -24,10 +22,8 @@
                 <td>{{ weather.id }}</td>
                 <td>{{ weather.city }}</td>
                 <td>{{ weather.country }}</td>
-                <td>{{ weather.lat }}</td>
-                <td>{{ weather.lon }}</td>
                 <td>{{ weather.temperature }}</td>
-                <td>{{ weather.humidity }}</td>
+                <td>{{ weather.condition }}</td>
                 <td>
                     <a href="{{ path('weather_show', {'id': weather.id}) }}">show</a>
                     <a href="{{ path('weather_edit', {'id': weather.id}) }}">edit</a>
