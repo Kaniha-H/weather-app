@@ -1,6 +1,6 @@
 <template>
-  <v-sheet color="primary" rounded="rounded" width="100%" class="mr-1 mb-1">
-    <v-row class="ma-2 px-2 py-5">
+  <v-sheet color="primary" rounded="rounded" width="99.5%" class="mb-1">
+    <v-row class="mx-2 px-2 pt-5">
       <v-col cols="2" class="d-flex align-center justify-center text-center">
         <v-icon size="40">{{
           getWeatherIcon(data.current.weather_code)
@@ -55,11 +55,15 @@
         </v-row>
       </v-col>
     </v-row>
+    <v-row>
+      <WeatherHourly :data="data" />
+    </v-row>
   </v-sheet>
 </template>
 
 <script setup>
 import getWeatherIcon from "../utils/weatherCode";
+import WeatherHourly from "./WeatherHourly.vue";
 
 const props = defineProps({
   data: Object,

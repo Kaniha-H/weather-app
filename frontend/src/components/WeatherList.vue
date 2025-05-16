@@ -10,6 +10,20 @@
       <div class="d-flex">
         <v-col>
           <v-btn
+            v-if="weather"
+            @click="addFavoris(weather)"
+            border="dashed md"
+            color="background"
+            rounded="rounded xl"
+            class="mt-1"
+            height="200"
+            width="200"
+          >
+            + Ajouter cette ville
+          </v-btn>
+
+          <v-btn
+            v-else
             @click="openAddDialog"
             border="dashed md"
             color="background"
@@ -17,8 +31,9 @@
             class="mt-1"
             height="200"
             width="200"
-            >+ Ajouter une ville</v-btn
           >
+            + Ajouter une ville
+          </v-btn>
         </v-col>
         <v-col v-if="weatherData" v-for="weather in weatherData">
           <v-sheet
@@ -68,7 +83,7 @@
     </v-row>
   </v-sheet>
   <v-dialog v-model="showAddDialog" max-width="600">
-    <v-card>
+    <v-card class="bg-background">
       <v-card-title>Ajouter une ville</v-card-title>
       <v-card-text>
         <WeatherForm
@@ -81,7 +96,7 @@
     </v-card>
   </v-dialog>
   <v-dialog v-model="showEditDialog" max-width="600">
-    <v-card>
+    <v-card class="bg-background">
       <v-card-title>Éditer la météo</v-card-title>
       <v-card-text>
         <WeatherForm
@@ -101,23 +116,25 @@ import axios from "axios";
 import WeatherForm from "./WeatherForm.vue";
 import getWeatherIcon from "../utils/weatherCode";
 
+const props = defineProps({
+  weather: Object,
+});
+
 const weatherData = ref([]);
 const editedWeather = ref({});
 const showEditDialog = ref(false);
 const newWeather = ref({
   city: "",
   country: "",
-  lat: "",
-  lon: "",
   temperature: "",
-  humidity: "",
+  condition: "",
 });
 
 const showAddDialog = ref(false);
 
 onMounted(async () => {
   const res = await axios.get("https://127.0.0.1:8000/api/weather/show");
-  weatherData.value = res.data;
+  weatherData.value = res.data.reverse();
 });
 const openAddDialog = () => {
   newWeather.value = {
@@ -129,13 +146,27 @@ const openAddDialog = () => {
   showAddDialog.value = true;
 };
 
+const addFavoris = async (weather) => {
+  newWeather.value = {
+    city: weather.city,
+    country: weather.country,
+    temperature: Math.round(weather.current.temperature_2m),
+    condition: weather.current.weather_code,
+  };
+
+  await axios.post("https://127.0.0.1:8000/api/weather/new", newWeather.value);
+
+  const res = await axios.get("https://127.0.0.1:8000/api/weather/show");
+  weatherData.value = res.data.reverse();
+};
+
 const addWeather = async () => {
   await axios.post("https://127.0.0.1:8000/api/weather/new", newWeather.value);
 
   showAddDialog.value = false;
 
   const res = await axios.get("https://127.0.0.1:8000/api/weather/show");
-  weatherData.value = res.data;
+  weatherData.value = res.data.reverse();
 };
 
 const editWeather = (item) => {
@@ -152,13 +183,13 @@ const updateWeather = async () => {
   showEditDialog.value = false;
 
   const res = await axios.get("https://127.0.0.1:8000/api/weather/show");
-  weatherData.value = res.data;
+  weatherData.value = res.data.reverse();
 };
 
 const deleteWeather = async (id) => {
   await axios.delete(`https://127.0.0.1:8000/api/weather/${id}`);
 
   const res = await axios.get("https://127.0.0.1:8000/api/weather/show");
-  weatherData.value = res.data;
+  weatherData.value = res.data.reverse();
 };
 </script>

@@ -1,32 +1,21 @@
 <template>
-  <v-sheet
-    color="primary"
-    rounded="rounded"
-    height="100%"
-    width="100%"
-    class="pa-5"
-  >
-    <v-row>
-      <h3 class="ma-4">Prévisions par heure</h3>
-    </v-row>
-    <v-row
-      class="d-flex flex-row justify-space-between mb-4 bg-background rounded"
+  <div class="d-flex overflow-y-auto pl-2 ma-3">
+    <v-col
+      class="mb-3 mx-2 bg-background rounded"
       v-for="(hour, index) in upcomingHours"
       :key="index"
     >
-      <v-row class="d-flex align-center pl-2">
-        <v-sheet class="ma-2" color="transparent"
-          ><v-icon size="24">{{ getWeatherIcon(hour.code) }}</v-icon></v-sheet
-        >
-        <v-sheet class="ma-2" color="transparent"
-          ><p>{{ Math.round(hour.temperature) }}°C</p></v-sheet
-        >
-      </v-row>
+      <v-sheet class="ma-2" color="transparent"
+        ><p>{{ Math.round(hour.temperature) }}°C</p></v-sheet
+      >
+      <v-sheet class="ma-2" color="transparent"
+        ><v-icon size="24">{{ getWeatherIcon(hour.code) }}</v-icon></v-sheet
+      >
       <v-sheet class="ma-2" color="transparent"
         ><p>{{ formatHour(hour.time) }}</p></v-sheet
       >
-    </v-row>
-  </v-sheet>
+    </v-col>
+  </div>
 </template>
 
 <script setup>
@@ -34,10 +23,7 @@ import { computed } from "vue";
 import getWeatherIcon from "../utils/weatherCode";
 
 const props = defineProps({
-  data: {
-    type: Object,
-    required: true,
-  },
+  data: Object,
 });
 
 const formatHour = (isoString) => {
@@ -45,16 +31,22 @@ const formatHour = (isoString) => {
   return `${date.getHours()}:00`;
 };
 
-// prend les 5 heures qui suivent l'heure actuelle
+// garder tous les heures après l'heure actuelle(inclus)
 const upcomingHours = computed(() => {
   const now = new Date();
+
   return props.data.hourly.time
-    .map((time, index) => ({
+    .map((time, i) => ({
       time,
-      temperature: props.data.hourly.temperature_2m[index],
-      code: props.data.hourly.weather_code[index],
+      temperature: props.data.hourly.temperature_2m[i],
+      code: props.data.hourly.weather_code[i],
     }))
-    .filter((entry) => new Date(entry.time) >= now)
-    .slice(0, 5);
+    .filter(({ time }) => {
+      const date = new Date(time);
+      return (
+        date.toDateString() === now.toDateString() &&
+        date.getHours() >= now.getHours()
+      );
+    });
 });
 </script>
