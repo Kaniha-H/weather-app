@@ -2,7 +2,7 @@
   <v-sheet
     color="primary"
     rounded="rounded"
-    class="mt-1"
+    class="mt-1 overflow-y-auto"
     height="250"
     width="100%"
   >
