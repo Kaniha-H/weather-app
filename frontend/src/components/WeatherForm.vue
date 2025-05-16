@@ -11,23 +11,13 @@
       :rules="[rules.required]"
     />
     <v-text-field
-      v-model="weather.lat"
-      label="Latitude"
-      :rules="[rules.required, rules.numeric]"
-    />
-    <v-text-field
-      v-model="weather.lon"
-      label="Longitude"
-      :rules="[rules.required, rules.numeric]"
-    />
-    <v-text-field
       v-model="weather.temperature"
       label="Température"
       :rules="[rules.required, rules.numeric]"
     />
     <v-text-field
-      v-model="weather.humidity"
-      label="Humidité"
+      v-model="weather.condition"
+      label="Condition"
       :rules="[rules.required, rules.numeric]"
     />
     <v-btn :color="buttonColor" @click="submitIfValid">

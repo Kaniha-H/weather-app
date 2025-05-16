@@ -18,17 +18,15 @@ final class WeatherController extends AbstractController
     #[Route('/show', name: 'weather', methods: ['GET'])]
     public function index(WeatherRepository $weatherRepository): Response
     {
-        $weatherData = $weatherRepository->findAll();
+        $weatherData = $weatherRepository->findAll([], ['id' => 'ASC']);
 
         $data = array_map(function ($weather) {
             return [
                 'id' => $weather->getId(),
                 'city' => $weather->getCity(),
                 'country' => $weather->getCountry(),
-                'lat' => $weather->getLat(),
-                'lon' => $weather->getLon(),
                 'temperature' => $weather->getTemperature(),
-                'humidity' => $weather->getHumidity(),
+                'condition' => $weather->getCondition(),
             ];
         }, $weatherData);
 
@@ -47,10 +45,8 @@ final class WeatherController extends AbstractController
         $weather = new Weather();
         $weather->setCity($data['city'] ?? '');
         $weather->setCountry($data['country'] ?? '');
-        $weather->setLat($data['lat'] ?? 0);
-        $weather->setLon($data['lon'] ?? 0);
         $weather->setTemperature($data['temperature'] ?? 0);
-        $weather->setHumidity($data['humidity'] ?? 0);
+        $weather->setCondition($data['condition'] ?? 0);
 
         $em->persist($weather);
         $em->flush();
@@ -65,10 +61,8 @@ final class WeatherController extends AbstractController
 
         $weather->setCity($data['city']);
         $weather->setCountry($data['country']);
-        $weather->setLat($data['lat']);
-        $weather->setLon($data['lon']);
         $weather->setTemperature($data['temperature']);
-        $weather->setHumidity($data['humidity']);
+        $weather->setCondition($data['condition']);
 
         $em->flush();
 

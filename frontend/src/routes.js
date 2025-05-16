@@ -1,4 +1,4 @@
-import Home from "./components/Home.vue";
+import Home from "./view/Home.vue";
 import WeatherList from "./components/WeatherList.vue";
 
 export const routes = [
