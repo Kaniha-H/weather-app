@@ -18,5 +18,8 @@ Font-end
 Back-end
 
 ```
+    php bin/console doctrine:database:create
+    php/bin console make:migration
+    bin/console doctrine:migrations:migrate
     symfony serve
 ```
